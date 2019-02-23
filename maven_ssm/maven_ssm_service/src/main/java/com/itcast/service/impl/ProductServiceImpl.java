@@ -3,7 +3,6 @@ package com.itcast.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.itcast.dao.ProductDao;
 import com.itcast.domain.Product;
-import com.itcast.domain.UpdateStatus;
 import com.itcast.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,9 +52,8 @@ public class ProductServiceImpl implements ProductService {
      * @Description: 修改选中商品的状态
      **/
     @Override
-    public void updateStatus(String id, Integer status) throws Exception {
-        UpdateStatus us = new UpdateStatus(id, status);
-        productDao.updateStatus(us);
+    public void updateStatus(String id,Integer status) throws Exception {
+        productDao.updateStatus(id,status);
     }
 
 

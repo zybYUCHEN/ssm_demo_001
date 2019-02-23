@@ -38,7 +38,15 @@ public interface UserInfoService extends UserDetailsService {
      * @Author: 32725
      * @Param: []
      * @Return: java.lang.String
-     * @Description: 查询用户详情，包含用户的所有角色，以及角色对应的所有权限
+     * @Description: 查询用户id详情，包含用户的所有角色，以及角色对应的所有权限
      **/
     UserInfo findUserDetails(String id) throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [id]
+    * @Return: void
+    * @Description: 根据用户id删除用户
+    **/
+    void deleteS(String id);
 }

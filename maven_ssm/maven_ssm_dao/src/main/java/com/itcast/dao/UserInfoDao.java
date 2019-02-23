@@ -29,9 +29,9 @@ public interface UserInfoDao {
     * @Author: 32725
     * @Param: [username]
     * @Return: com.itcast.domain.UserInfo
-    * @Description: 根据用户名查找用户，以及用户的角色,以及角色对应的所有权限
+    * @Description: 根据用户id查找用户，以及用户的角色,以及角色对应的所有权限
     **/
-    UserInfo findUser(String username)throws Exception;
+    UserInfo findUser(String id)throws Exception;
 
     /**
     * @Author: 32725
@@ -41,4 +41,26 @@ public interface UserInfoDao {
     **/
     List<UserInfo> findAll(String term) throws Exception;
 
+    /**
+    * @Author: 32725
+    * @Param: [username]
+    * @Return: com.itcast.domain.UserInfo
+    * @Description: 据用户名查找用户
+    **/
+    UserInfo findUserByName(String username)throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [id]
+    * @Return: void
+    * @Description: 根据用户id删除关联表中用户数据
+    **/
+    void deleteUsersAndRole(String id);
+    /**
+    * @Author: 32725
+    * @Param: [id]
+    * @Return: void
+    * @Description: 根据用户id删除用户表中用户的信息
+    **/
+    void deleteUser(String id);
 }

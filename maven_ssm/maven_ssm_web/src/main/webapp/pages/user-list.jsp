@@ -157,7 +157,7 @@
 											<td>${user.phoneNum }</td>
 											<td>${user.statusStr }</td>											
 											<td class="text-center">
-												<a href="${pageContext.request.contextPath}/user/find/${user.username}" class="btn bg-olive btn-xs">详情</a>
+												<a href="${pageContext.request.contextPath}/user/find/${user.id}" class="btn bg-olive btn-xs">详情</a>
 												<a href="${pageContext.request.contextPath}/user/findUserByIdAndAllRole.do?id=${user.id}" class="btn bg-olive btn-xs">修改角色</a>
 											</td>
 										</tr>
@@ -283,29 +283,48 @@
 	<script>
 			<%--删除选中的用户--%>
 			function deleteS() {
-				var ids = $(".ids");
+				var arr = $(".ids");
 				var flag=false;
                 var list ="";
-				for (var i =0;i<ids.length;i++){
-                    if (ids[i].checked) {
-                        flag=true;
-                        list=list+ids[i].val();
-                        if (i<ids.length-1){
+				for (var i =0;i<arr.length;i++){
+                    if (arr[i].checked) {
+                        list=list+arr[i].value;
+                        if (arr.length>1&&i<arr.length-1){
                             list=list+",";
                         }
+                        flag=true;
                     }
 				}
 				if (!flag){
 				    alert("请勾选要删除的用户")
-				}else{
+					return;
+				}
+				if (flag){
                     //要判断删除的是否是当前用户
-					alert(111)
-                    $.post("${pageContext.request.contextPath}/user/find",{list:list},function (data){
-                        alert(data);
-                    },"json");
-				    if (confirm("确认要删除选中用户吗？")) {
-				        location.href="${pageContext.request.contextPath}/user/delete/"+list;
-					}
+					$.ajax({
+						url:"${pageContext.request.contextPath}/user/find",
+						type:"POST",
+						data:{"list":list},
+						success:function (data) {
+						       if ("是否删除选中的用户") {
+						           if (data=="1"){
+                                       if (confirm("删除用户中包含当前登陆用户，是否删除？")) {
+                                           location.href="${pageContext.request.contextPath}/user/delete/"+list+"/1";
+                                       }else {
+                                           location.href="${pageContext.request.contextPath}/user/delete/"+list+"/0";
+                                       }
+                                   } else {
+										location.href="${pageContext.request.contextPath}/user/delete/"+list+"/0";
+                                   }
+                               }
+                        },
+                        contentType: "application/json", //发送信息至服务器时内容编码类型
+                        dataType: "json"                     //预期服务器返回的数据类型
+					});
+
+                    <%--if (confirm("确认要删除选中用户吗？")) {--%>
+                        <%--location.href="${pageContext.request.contextPath}/user/delete/"+list;--%>
+                    <%--}--%>
 				}
             }
 			<%--条件查询方法--%>

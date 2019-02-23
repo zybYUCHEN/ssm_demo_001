@@ -1,7 +1,7 @@
 package com.itcast.dao;
 
 import com.itcast.domain.Product;
-import com.itcast.domain.UpdateStatus;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public interface ProductDao {
      * @Return: void
      * @Description: 修改选中商品的状态
      **/
-    void updateStatus(UpdateStatus us)throws Exception;
+    void updateStatus(@Param("id") String id, @Param("status") Integer status)throws Exception;
 
 //----------------------------删除操作---------------------------------------//
 

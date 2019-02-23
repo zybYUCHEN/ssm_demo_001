@@ -1,22 +1,19 @@
 package com.itcast.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.itcast.domain.Permission;
-import com.itcast.domain.Role;
 import com.itcast.domain.UserInfo;
 import com.itcast.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,10 +47,33 @@ public class UserInfoController {
 
 //-----------------------------------------更新操作---------------------------------------------//
 //-----------------------------------------删除操作---------------------------------------------//
-
-//    public String deleteS(){
-//
-//    }
+    @RequestMapping(value = "/delete/{list}/{status}",method = RequestMethod.GET)
+    public String deleteS(@PathVariable String list,@PathVariable int status,HttpSession session){
+        //1.处理用户id
+        String[] ids = list.split(",");
+        //2.定义一个标签，决定跳转页面
+        boolean flag = false;
+        //3.取出当前用户id
+        UserInfo userInfo = (UserInfo) session.getAttribute("userInfo");
+        String infoId = userInfo.getId();
+        //4.遍历数组
+        for (String id : ids) {
+            //4.1判断是否包含当前用户id
+            if (id.equals(infoId)){
+                if (status==1){ //标记为1则删除
+                    userInfoService.deleteS(id);
+                    flag=true;
+                }
+            }else {
+                userInfoService.deleteS(id);
+            }
+        }
+        if (flag){
+            session.invalidate();
+            return "redirect:/login.jsp";
+        }
+        return "redirect:/user/find";
+    }
 
 //-----------------------------------------查询操作---------------------------------------------//
 
@@ -84,10 +104,10 @@ public class UserInfoController {
      * @Return: java.lang.String
      * @Description: 查询用户详情，包含用户的所有角色，以及角色对应的所有权限
      **/
-    @RequestMapping(value = "/find/{username}", method = RequestMethod.GET)
-    public String findUserDetails(@PathVariable String username,Model model) throws Exception {
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    public String findUserDetails(@PathVariable String id,Model model) throws Exception {
         //1.根据用户id查找用户详情
-        UserInfo userInfo = userInfoService.findUserDetails(username);
+        UserInfo userInfo = userInfoService.findUserDetails(id);
         //2.把用户对象存入request域中
         model.addAttribute("user", userInfo);
         return "user-show";
@@ -102,27 +122,29 @@ public class UserInfoController {
     @RequestMapping(value = "/find",method = RequestMethod.POST)
     public @ResponseBody String findUserById(@RequestBody String list, HttpSession session) throws Exception {
 
-        String flag = "false";
-        List<UserInfo> userInfos= null;
-
-        //1..处理参数，切割参数
-        String[] ids = list.split(",");
-        //2.遍历根据id查询所有用户信息
+        //1.ajax请求参数如果包含字符需要手动使用URLDecoder解码
+        String _ids = URLDecoder.decode(list, "utf-8");
+        String[] split = _ids.split("=");//切割json数据
+        String flag = "0";
+        List<UserInfo> userInfos= new ArrayList<>();
+        //2..处理参数，切割参数
+        String[] ids = split[1].split(",");
+        //3.遍历根据id查询所有用户信息
         for (String id : ids) {
             userInfos.add(userInfoService.findUserDetails(id));
         }
-        //3.获取当前正在登陆的用户的用户名
+        //4.获取当前正在登陆的用户的用户名
         SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
         //4.判断删除用户中是否包含当前用户
         for (UserInfo userInfo : userInfos) {
             if (userInfo.getUsername().equals(username)){
-                flag="true";
+                flag="1";
+                session.setAttribute("userInfo",userInfo);//把当前用户存入session
                 return flag;
             }
         }
-
         return flag;
     }
 }

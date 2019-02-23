@@ -21,7 +21,7 @@
         where id = #{id}
     </delete>
     <!--修改选中的商品的状态-->
-    <update id="updateStatus" parameterType="updateStatus">
+    <update id="updateStatus">
         update PRODUCT
         set PRODUCTSTATUS=#{status}
         where ID = #{id}

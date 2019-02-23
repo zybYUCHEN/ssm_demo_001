@@ -43,7 +43,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = null;
         try {
-            UserInfo userInfo = userInfoDao.findUser(username);
+            UserInfo userInfo = userInfoDao.findUserByName(username);
             user = new User(userInfo.getUsername(), userInfo.getPassword(),userInfo.getStatus()==1?true:false,
                     true,true,true, getAuthority(userInfo.getRoles()));
         } catch (Exception e) {
@@ -103,10 +103,24 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @Author: 32725
      * @Param: []
      * @Return: java.lang.String
-     * @Description: 查询用户详情，包含用户的所有角色，以及角色对应的所有权限
+     * @Description: 查询用户id详情，包含用户的所有角色，以及角色对应的所有权限
      **/
-    public UserInfo findUserDetails(String username) throws Exception {
-        return userInfoDao.findUser(username);
+    public UserInfo findUserDetails(String id) throws Exception {
+        return userInfoDao.findUser(id);
+    }
+
+    /**
+    * @Author: 32725
+    * @Param: [id]
+    * @Return: void
+    * @Description: 根据用户id删除用户，先要删除用户关联表，users_role
+    **/
+    @Override
+    public void deleteS(String id) {
+        //1.先删除关联表中用户的信息
+        userInfoDao.deleteUsersAndRole(id);
+        //2.删除用户表，用户的信息
+        userInfoDao.deleteUser(id);
     }
 
 

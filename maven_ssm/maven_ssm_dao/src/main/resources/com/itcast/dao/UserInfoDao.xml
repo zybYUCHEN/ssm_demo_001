@@ -12,9 +12,11 @@
                     select="com.itcast.dao.RoleDao.findByUserId" fetchType="lazy"/>
     </resultMap>
     <select id="findUser" parameterType="string" resultMap="UserAndRole">
-        select * from Users where USERNAME=#{username}
+        select * from Users where id = #{id}
     </select>
-
+    <select id="findUserByName" parameterType="string" resultMap="UserAndRole">
+        select * from Users where USERNAME = #{username}
+    </select>
     <!--查询所有用户信息，如果有条件，带上条件-->
     <select id="findAll" parameterType="string" resultType="userInfo">
         SELECT * FROM  USERS
@@ -30,4 +32,12 @@
         INSERT INTO USERS(email, username, password, phonenum, status) VALUES (#{email},#{username},#{password},
                                                                                #{phoneNum},#{status})
     </insert>
+
+
+    <delete id="deleteUsersAndRole" parameterType="string">
+        delete from USERS_ROLE where USERID = #{usesId}
+    </delete>
+    <delete id="deleteUser" parameterType="string">
+        delete from USERS where id = #{usesId}
+    </delete>
 </mapper>

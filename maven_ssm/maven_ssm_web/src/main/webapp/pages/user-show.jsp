@@ -145,8 +145,8 @@
 								<tbody>
 									<c:forEach items="${user.roles}" var="role">
 										<tr data-tt-id="1" data-tt-parent-id="0">
-											<td>${role.roleName}</td>
-											<td>${role.roleDesc}</td>
+											<td>${role.roleName }</td>
+											<td>${role.roleDesc }</td>
 										</tr>
 										<c:forEach items="${role.permissions}" var="permission">
 											<tr data-tt-id="1-1" data-tt-parent-id="1">
