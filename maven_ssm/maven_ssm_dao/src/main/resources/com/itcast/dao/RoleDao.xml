@@ -19,4 +19,9 @@
             </if>
         </where>
     </select>
+
+    <!--给用户添加角色-->
+    <insert id="addRole" >
+        insert into USERS_ROLE values (#{userId},#{roleId})
+    </insert>
 </mapper>

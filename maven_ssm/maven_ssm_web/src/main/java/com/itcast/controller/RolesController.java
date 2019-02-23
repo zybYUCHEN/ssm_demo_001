@@ -2,7 +2,6 @@ package com.itcast.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.itcast.domain.Role;
-import com.itcast.domain.UserInfo;
 import com.itcast.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,4 +43,5 @@ public class RolesController {
         //4.跳转展示页面
         return "role-list";
     }
+
 }

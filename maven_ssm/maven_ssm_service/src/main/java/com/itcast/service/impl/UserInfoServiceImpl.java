@@ -6,11 +6,7 @@ import com.itcast.domain.Role;
 import com.itcast.domain.UserInfo;
 import com.itcast.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +100,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @Return: java.lang.String
      * @Description: 查询用户id详情，包含用户的所有角色，以及角色对应的所有权限
      **/
-    public UserInfo findUserDetails(String id) throws Exception {
+    public UserInfo findUser(String id) throws Exception {
         return userInfoDao.findUser(id);
     }
 
@@ -116,11 +111,33 @@ public class UserInfoServiceImpl implements UserInfoService {
     * @Description: 根据用户id删除用户，先要删除用户关联表，users_role
     **/
     @Override
-    public void deleteS(String id) {
+    public void deleteS(String id) throws Exception {
         //1.先删除关联表中用户的信息
         userInfoDao.deleteUsersAndRole(id);
         //2.删除用户表，用户的信息
         userInfoDao.deleteUser(id);
+    }
+
+    /**
+     * @Author: 32725
+     * @Param: [username]
+     * @Return: com.itcast.domain.UserInfo
+     * @Description:  根据用户名查找用户
+     **/
+    @Override
+    public UserInfo findUserByName(String username) throws Exception {
+        return userInfoDao.findUserByName(username);
+    }
+
+    /**
+     * @Author: 32725
+     * @Param: [uid]
+     * @Return: void
+     * @Description: 根据用户id删除用户上的所有权限
+     **/
+    @Override
+    public void deleteUserRole(String uid) throws Exception {
+        userInfoDao.deleteUsersAndRole(uid);
     }
 
 

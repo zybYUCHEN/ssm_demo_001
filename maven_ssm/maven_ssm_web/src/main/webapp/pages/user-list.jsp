@@ -157,8 +157,8 @@
 											<td>${user.phoneNum }</td>
 											<td>${user.statusStr }</td>											
 											<td class="text-center">
-												<a href="${pageContext.request.contextPath}/user/find/${user.id}" class="btn bg-olive btn-xs">详情</a>
-												<a href="${pageContext.request.contextPath}/user/findUserByIdAndAllRole.do?id=${user.id}" class="btn bg-olive btn-xs">修改角色</a>
+												<a href="${pageContext.request.contextPath}/user/find/${user.id}/user-show" class="btn bg-olive btn-xs">详情</a>
+												<a href="${pageContext.request.contextPath}/user/find/${user.id}/user-role-add" class="btn bg-olive btn-xs">修改角色</a>
 											</td>
 										</tr>
 									</c:forEach>

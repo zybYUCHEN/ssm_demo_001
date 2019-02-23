@@ -40,7 +40,7 @@ public interface UserInfoService extends UserDetailsService {
      * @Return: java.lang.String
      * @Description: 查询用户id详情，包含用户的所有角色，以及角色对应的所有权限
      **/
-    UserInfo findUserDetails(String id) throws Exception;
+    UserInfo findUser(String id) throws Exception;
 
     /**
     * @Author: 32725
@@ -48,5 +48,21 @@ public interface UserInfoService extends UserDetailsService {
     * @Return: void
     * @Description: 根据用户id删除用户
     **/
-    void deleteS(String id);
+    void deleteS(String id) throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [username]
+    * @Return: com.itcast.domain.UserInfo
+    * @Description:  根据用户名查找用户
+    **/
+    UserInfo findUserByName(String username) throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [uid]
+    * @Return: void
+    * @Description: 删除用户上的所有权限
+    **/
+    void deleteUserRole(String uid)throws Exception;
 }

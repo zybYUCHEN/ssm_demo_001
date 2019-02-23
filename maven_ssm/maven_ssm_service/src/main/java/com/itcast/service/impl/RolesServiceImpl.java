@@ -2,7 +2,9 @@ package com.itcast.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.itcast.dao.RoleDao;
+import com.itcast.dao.UserInfoDao;
 import com.itcast.domain.Role;
+import com.itcast.domain.UserInfo;
 import com.itcast.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +37,22 @@ public class RolesServiceImpl implements RolesService {
             term="%"+term+"%";
         }
         return roleDao.findAll(term);
+    }
+
+    @Override
+    public List<Role> findAll() throws Exception {
+        List<Role> list = roleDao.findAll("");
+        return list;
+    }
+
+    /**
+     * @Author: 32725
+     * @Param: [id]
+     * @Return: void
+     * @Description: 添加指定id的权限，添加数据到users_role中
+     **/
+    @Override
+    public void addRole(String userId,String roleId) throws Exception{
+        roleDao.addRole(userId,roleId);
     }
 }

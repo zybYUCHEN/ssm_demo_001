@@ -16,6 +16,17 @@ public class Role implements Serializable {
     private String roleName;  //角色名称
     private String roleDesc;    //角色描述
 
+    //添加的属性，用于用户角色的修改，0代表当前用户没有该权限，1表示有
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     //角色和权限的关系：多对多
     private List<Permission> permissions;
     //角色和用户的关系：多对多

@@ -53,14 +53,14 @@ public interface UserInfoDao {
     * @Author: 32725
     * @Param: [id]
     * @Return: void
-    * @Description: 根据用户id删除关联表中用户数据
+    * @Description: 根据用户id删除关联表中用户数据，就是删除用户的权限
     **/
-    void deleteUsersAndRole(String id);
+    void deleteUsersAndRole(String id)throws Exception;
     /**
     * @Author: 32725
     * @Param: [id]
     * @Return: void
     * @Description: 根据用户id删除用户表中用户的信息
     **/
-    void deleteUser(String id);
+    void deleteUser(String id)throws Exception;
 }
