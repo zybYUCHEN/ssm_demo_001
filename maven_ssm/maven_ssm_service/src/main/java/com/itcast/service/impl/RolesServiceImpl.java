@@ -55,4 +55,15 @@ public class RolesServiceImpl implements RolesService {
     public void addRole(String userId,String roleId) throws Exception{
         roleDao.addRole(userId,roleId);
     }
+
+    /**
+     * @Author: 32725
+     * @Param: [role]
+     * @Return: java.lang.String
+     * @Description: 保存新角色
+     **/
+    @Override
+    public void saveRole(Role role) throws Exception {
+        roleDao.saveRole(role);
+    }
 }

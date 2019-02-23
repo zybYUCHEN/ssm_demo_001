@@ -24,4 +24,9 @@
     <insert id="addRole" >
         insert into USERS_ROLE values (#{userId},#{roleId})
     </insert>
+
+    <!--添加新角色-->
+    <insert id="saveRole" parameterType="role">
+        insert into ROLE(rolename, roledesc) VALUES (#{roleName},#{roleDesc})
+    </insert>
 </mapper>

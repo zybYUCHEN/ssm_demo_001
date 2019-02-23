@@ -111,7 +111,10 @@
 										<button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/pages/role-add.jsp'">
 											<i class="fa fa-file-o"></i> 新建
 										</button>
-										
+										<button type="button" class="btn btn-default" title="删除"
+												onclick="deleteS()">
+											<i class="fa fa-trash-o"></i> 删除
+										</button>
 										<button type="button" class="btn btn-default" title="刷新">
 											<i class="fa fa-refresh"></i> 刷新
 										</button>

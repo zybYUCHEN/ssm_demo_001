@@ -23,6 +23,24 @@ public class RolesController {
     @Autowired
     private RolesService rolesService;
 
+    //--------------------------------------------------保存操作--------------------------------------------//
+    /**
+    * @Author: 32725
+    * @Param: [role]
+    * @Return: java.lang.String
+    * @Description: 保存新角色
+    **/
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    public String saveRole(Role role)throws Exception{
+        rolesService.saveRole(role);
+        return "redirect:/role/find";
+    }
+    //--------------------------------------------------更新操作--------------------------------------------//
+    //--------------------------------------------------删除操作--------------------------------------------//
+
+    //--------------------------------------------------查询操作--------------------------------------------//
+
+
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     public String findAll(@RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                           @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer _pageSize,

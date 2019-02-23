@@ -34,4 +34,12 @@ public interface RolesService {
     * @Description: 添加指定id的权限，添加数据到users_role中
     **/
     void addRole(String userId,String roleId)throws Exception;
+
+    /**
+     * @Author: 32725
+     * @Param: [role]
+     * @Return: java.lang.String
+     * @Description: 保存新角色
+     **/
+    void saveRole(Role role)throws Exception;
 }
