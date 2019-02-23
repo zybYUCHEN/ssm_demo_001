@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcast.dao.UserInfoDao">
+
+
+    <!--用于登陆校验，根据用户名查找用户，带上用户的所有角色，以及角色对应的权限-->
+    <resultMap id="UserAndRole" type="userInfo">
+        <id property="id" column="id" />
+        <collection property="roles" column="id" ofType="role"
+                    select="com.itcast.dao.RoleDao.findByUserId" fetchType="lazy"/>
+    </resultMap>
+    <select id="findUser" parameterType="string" resultMap="UserAndRole">
+        select * from Users where USERNAME=#{username}
+    </select>
+
+    <!--查询所有用户信息，如果有条件，带上条件-->
+    <select id="findAll" parameterType="string" resultType="userInfo">
+        SELECT * FROM  USERS
+        <where>
+            <if test="value!=null and value.length>0">
+                USERNAME like #{username}
+            </if>
+        </where>
+    </select>
+
+    <!--保存用户-->
+    <insert id="saveUser" parameterType="userInfo" >
+        INSERT INTO USERS(email, username, password, phonenum, status) VALUES (#{email},#{username},#{password},
+                                                                               #{phoneNum},#{status})
+    </insert>
+</mapper>

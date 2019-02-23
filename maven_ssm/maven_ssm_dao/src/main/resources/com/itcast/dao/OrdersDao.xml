@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcast.dao.OrdersDao">
+    <!--查询所有订单，包含商品信息,支持根据订单编号进行模糊查询-->
+    <resultMap id="findAllOrdersAndProduct" type="orders">
+        <id property="id" column="id"/>
+        <association property="product" column="productId" javaType="product" select="com.itcast.dao.ProductDao.findOne" fetchType="eager"/>
+    </resultMap>
+    <select id="findAll" parameterType="string" resultMap="findAllOrdersAndProduct">
+        select * from ORDERS
+        <where>
+            <if test="value!=null and value!=''">
+                ORDERNUM like #{term}
+            </if>
+        </where>
+    </select>
+
+</mapper>

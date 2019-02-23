@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcast.dao.PermissionDao">
+    <select id="findByRoleId" parameterType="string" resultType="permission" >
+        select * from PERMISSION where ID in (select PERMISSIONID from ROLE_PERMISSION where ROLEID=#{roleId})
+    </select>
+</mapper>
