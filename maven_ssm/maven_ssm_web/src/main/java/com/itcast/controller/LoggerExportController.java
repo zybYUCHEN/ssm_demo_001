@@ -44,7 +44,7 @@ public class LoggerExportController {
 
         Workbook workbook = Workbook.getWorkbook(new File("日志"));
         Sheet sheet = workbook.getSheet(sheetName);
-        Label label = new Label();
+        new Label()
 
         return null;
     }
