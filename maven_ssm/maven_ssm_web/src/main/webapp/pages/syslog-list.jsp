@@ -87,7 +87,7 @@
 				<li><a href="${pageContext.request.contextPath}/index.jsp"><i
 						class="fa fa-dashboard"></i> 首页</a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/sysLog/findAll.do">日志管理</a></li>
+					href="${pageContext.request.contextPath}/sysLog/findAll">日志管理</a></li>
 
 				<li class="active">全部日志</li>
 			</ol>
@@ -119,9 +119,9 @@
 						</div>
 						<div class="box-tools pull-right">
 							<div class="has-feedback">
-								<input type="text" class="form-control input-sm"
-									placeholder="搜索"> <span
-									class="glyphicon glyphicon-search form-control-feedback"></span>
+								<input type="text" class="form-control input-sm" placeholder="${term}" id="term" value="${term}">
+								<button type="button" class="btn bg-olive btn-xs" onclick="search()">搜索</button>
+								<span class="glyphicon glyphicon-search form-control-feedback"></span>
 							</div>
 						</div>
 						<!--工具栏/-->
@@ -143,7 +143,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${sysLogs}" var="syslog">
+								<c:forEach items="${pageInfo.list}" var="syslog">
 									<tr>
 										<td><input name="ids" type="checkbox"></td>
 										<td>${syslog.id}</td>
@@ -160,24 +160,8 @@
 						</table>
 						<!--数据列表/-->
 
-						<!--工具栏-->
-						<div class="pull-left">
-							<div class="form-group form-inline">
-								<div class="btn-group">
-									<button type="button" class="btn btn-default" title="刷新"
-										onclick="window.location.reload();">
-										<i class="fa fa-refresh"></i> 刷新
-									</button>
-								</div>
-							</div>
-						</div>
-						<div class="box-tools pull-right">
-							<div class="has-feedback">
-								<input type="text" class="form-control input-sm"
-									placeholder="搜索"> <span
-									class="glyphicon glyphicon-search form-control-feedback"></span>
-							</div>
-						</div>
+
+
 						<!--工具栏/-->
 
 
@@ -191,27 +175,35 @@
 				<div class="box-footer">
 					<div class="pull-left">
 						<div class="form-group form-inline">
-							总共2 页，共14 条数据。 每页 <select class="form-control">
-								<option>10</option>
-								<option>15</option>
-								<option>20</option>
-								<option>50</option>
-								<option>80</option>
+							总共${pageInfo.pages} 页，共${pageInfo.total} 条数据。 每页
+							<select class="form-control" id="changPageSize" onchange="changPageSize('${pageInfo.pageNum}')">
+								<option ${pageInfo.pageSize==1?"selected":""} value="1">1</option>
+								<option ${pageInfo.pageSize==5?"selected":""} value="5">5</option>
+								<option ${pageInfo.pageSize==10?"selected":""} value="10">10</option>
+								<option ${pageInfo.pageSize==20?"selected":""} value="20">20</option>
 							</select> 条
 						</div>
 					</div>
 
 					<div class="box-tools pull-right">
 						<ul class="pagination">
-							<li><a href="#" aria-label="Previous">首页</a></li>
-							<li><a href="#">上一页</a></li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">下一页</a></li>
-							<li><a href="#" aria-label="Next">尾页</a></li>
+							<li>
+								<a href="${pageContext.request.contextPath}/log/find?pageNum=1&pageSize=${pageInfo.pageSize}&term=${term}"
+								   aria-label="Previous">首页</a></li>
+							<li>
+								<a href="${pageContext.request.contextPath}/log/find?pageNum=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}&term=${term}">上一页</a>
+							</li>
+							<c:forEach begin="1" end="${pageInfo.pages}" var="pageNum">
+								<li>
+									<a href="${pageContext.request.contextPath}/log/find?pageNum=${pageNum}&pageSize=${pageInfo.pageSize}&term=${term}">${pageNum}</a>
+								</li>
+							</c:forEach>
+							<li>
+								<a href="${pageContext.request.contextPath}/log/find?pageNum=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}&term=${term}">下一页</a>
+							</li>
+							<li>
+								<a href="${pageContext.request.contextPath}/log/find?pageNum=${pageInfo.pages}&pageSize=${pageInfo.pageSize}&term=${term}"
+								   aria-label="Next">尾页</a></li>
 						</ul>
 					</div>
 
@@ -325,7 +317,22 @@
 		src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
 	<script>
-		$(document).ready(function() {
+
+        <%--条件查询方法--%>
+
+        function search() {
+            var term = $("#term").val();
+            location.href = "${pageContext.request.contextPath}/log/find?pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}&term=" + term;
+        }
+
+        <%--切换pageSize，每页展示数据量--%>
+
+        function changPageSize(pageNum) {
+            var pageSize = $("#changPageSize").val();
+            location.href = "${pageContext.request.contextPath}/log/find?pageNum=" + pageNum + "&pageSize=" + pageSize + "&term=${term}";
+        }
+
+        $(document).ready(function() {
 			// 选择框
 			$(".select2").select2();
 
