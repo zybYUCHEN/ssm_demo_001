@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itcast.dao.SysLogDao">
-    <select id="findAll" parameterType="string" resultType="permission">
+    <select id="findAll" parameterType="string" resultType="sysLog">
         select * from SYSLOG
         <where>
             <if test="value!=null and value.length>0">

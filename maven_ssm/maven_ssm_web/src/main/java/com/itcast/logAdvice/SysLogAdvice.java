@@ -42,7 +42,6 @@ public class SysLogAdvice {
     @Autowired
     private SysLogService sysLogService;
 
-    private SysLog sysLog;//用于封装日志信息
     private Date visitTime; //初次访问的时间
     private Class clazz; //访问的类
     private Method method;//访问的方法
@@ -89,9 +88,10 @@ public class SysLogAdvice {
                 //注意参数为Model时，通过joinPoint.getArgs();获得的实际类型为BindingAwareModelMap
                 //需要手动替换一下，换成Model.class,不然也找不到方法
                 if (args[i] instanceof BindingAwareModelMap) {
-                    args[i] = Model.class;
+                    classArgs[i] = Model.class;
+                } else {
+                    classArgs[i] = args[i].getClass();
                 }
-                classArgs[i] = args[i].getClass();
             }
             method = clazz.getMethod(methodName, classArgs);
         }
@@ -127,7 +127,7 @@ public class SysLogAdvice {
      **/
     @After("pt1()")
     public void afterAdvice() {
-
+        SysLog sysLog = new SysLog();//用于封装日志信息
         //7.获取执行时间
         executionTime = (new Date().getTime()) - visitTime.getTime();
         //排除日志相关操作，不记录

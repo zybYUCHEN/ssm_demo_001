@@ -1,6 +1,7 @@
 package com.itcast.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.itcast.domain.SysLog;
 import com.itcast.domain.UserInfo;
 import com.itcast.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class SysLogController {
             pageSize = _pageSize;
         }
         //1.传递分页参数，currentPage当前页，默认为1，pageSize每页展示的数据条数，默认为5
-        List<UserInfo> list = sysLogService.findAll(pageNum, pageSize, term);
+        List<SysLog> list = sysLogService.findAll(pageNum, pageSize, term);
         //2.使用PageInfo封装分页数据
         PageInfo pageInfo = new PageInfo(list);
         //3.添加入request域中
