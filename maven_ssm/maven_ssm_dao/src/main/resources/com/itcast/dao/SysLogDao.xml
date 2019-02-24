@@ -11,4 +11,9 @@
             </if>
         </where>
     </select>
+
+    <insert id="save" parameterType="sysLog">
+        insert into SYSLOG(visittime, username, ip, url, executiontime, method)
+        values (#{visitTime},#{username},#{ip},#{url},#{executionTime},#{method})
+    </insert>
 </mapper>

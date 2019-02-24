@@ -2,6 +2,7 @@ package com.itcast.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.itcast.dao.SysLogDao;
+import com.itcast.domain.SysLog;
 import com.itcast.domain.UserInfo;
 import com.itcast.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,16 @@ public class SysLogServiceImpl implements SysLogService {
             term="%"+term+"%";
         }
         return sysLogDao.findAll(term);
+    }
+
+    /**
+     * @Author: 32725
+     * @Param: [sysLog]
+     * @Return: void
+     * @Description: 保存操作日志
+     **/
+    @Override
+    public void save(SysLog sysLog) {
+        sysLogDao.save(sysLog);
     }
 }

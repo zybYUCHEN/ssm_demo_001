@@ -1,5 +1,6 @@
 package com.itcast.service;
 
+import com.itcast.domain.SysLog;
 import com.itcast.domain.UserInfo;
 
 import java.util.List;
@@ -18,4 +19,12 @@ public interface SysLogService {
     * @Description: 分页查看日志
     **/
     List<UserInfo> findAll(Integer pageNum, Integer pageSize, String term) throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [sysLog]
+    * @Return: void
+    * @Description: 保存操作日志
+    **/
+    void save(SysLog sysLog);
 }

@@ -33,4 +33,6 @@
             </set>
         </property>
     </bean>
+    <!--开启AOP注解支持-->
+    <aop:aspectj-autoproxy/>
 </beans>

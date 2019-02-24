@@ -1,5 +1,6 @@
 package com.itcast.dao;
 
+import com.itcast.domain.SysLog;
 import com.itcast.domain.UserInfo;
 
 import java.util.List;
@@ -18,4 +19,12 @@ public interface SysLogDao {
      * @Description: 分页查询所有权限
      **/
     List<UserInfo> findAll(String term) throws Exception;
+
+    /**
+     * @Author: 32725
+     * @Param: [sysLog]
+     * @Return: void
+     * @Description: 保存操作日志
+     **/
+    void save(SysLog sysLog);
 }

@@ -10,5 +10,4 @@
     <!--导入service层配置-->
     <import resource="classpath:spring/applicationContext-service.xml"/>
 
-
 </beans>
