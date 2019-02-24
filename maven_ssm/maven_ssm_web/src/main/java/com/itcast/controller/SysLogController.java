@@ -2,7 +2,6 @@ package com.itcast.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.itcast.domain.SysLog;
-import com.itcast.domain.UserInfo;
 import com.itcast.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -114,6 +114,11 @@
 										onclick="window.location.reload();">
 										<i class="fa fa-refresh"></i> 刷新
 									</button>
+									<div id="iframe_home" class="iframe cur">
+										    <a class="waves-effect btn btn-info btn-sm" href="javascript:ExToExcel();" >
+										    <i class="zmdi zmdi-plus"></i> 导出Excel</a>
+										<table id="table"></table>
+									</div>
 									<button type="button" class="btn btn-default" title="删除"
 											onclick="deleteS()">
 										<i class="fa fa-trash-o"></i> 删除
@@ -322,6 +327,10 @@
 
 	<script>
 
+
+	function exportLog(){
+            location.href="${pageContext.request.contextPath}/export/xml";
+		}
         <%--条件查询方法--%>
 
         function search() {

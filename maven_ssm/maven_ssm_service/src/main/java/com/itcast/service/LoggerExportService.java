@@ -10,5 +10,11 @@ import java.util.List;
  * @Description:
  */
 public interface LoggerExportService {
-    List<SysLog> findAllSysLog();
+    /**
+    * @Author: 32725
+    * @Param: []
+    * @Return: java.util.List<com.itcast.domain.SysLog>
+    * @Description: 获取所有日志
+    **/
+    List<SysLog> findAllSysLog() throws Exception;
 }
