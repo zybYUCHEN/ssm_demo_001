@@ -114,6 +114,10 @@
 										onclick="window.location.reload();">
 										<i class="fa fa-refresh"></i> 刷新
 									</button>
+									<button type="button" class="btn btn-default" title="删除"
+											onclick="deleteS()">
+										<i class="fa fa-trash-o"></i> 删除
+									</button>
 								</div>
 							</div>
 						</div>
