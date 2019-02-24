@@ -79,13 +79,13 @@
 			<!-- 内容头部 -->
 			<section class="content-header">
 			<h1>
-				资源权限管理 <small>全部权限</small>
+				权限管理 <small>全部权限</small>
 			</h1>
 			<ol class="breadcrumb">
 				<li><a href="${pageContext.request.contextPath}/index.jsp"><i
 						class="fa fa-dashboard"></i> 首页</a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/permission/findAll.do">资源权限管理</a></li>
+					href="${pageContext.request.contextPath}/role/findAll.do">权限管理</a></li>
 
 				<li class="active">全部权限</li>
 			</ol>
@@ -111,7 +111,6 @@
 										<button type="button" class="btn btn-default" title="新建" onclick="location.href='${pageContext.request.contextPath}/pages/permission-add.jsp'">
 											<i class="fa fa-file-o"></i> 新建
 										</button>
-										
 										<button type="button" class="btn btn-default" title="刷新">
 											<i class="fa fa-refresh"></i> 刷新
 										</button>
@@ -148,10 +147,10 @@
 											<td><input name="ids" type="checkbox"></td>
 											<td>${p.id }</td>
 											<td>${p.permissionName }</td>
-											<td>${p.url }</td>
+											<td>${p.url}</td>
 											<td class="text-center">
-												<a href="${pageContext.request.contextPath}/permission/findById.do?id=${p.id}" class="btn bg-olive btn-xs">详情</a>
-												<a href="${pageContext.request.contextPath}/permission/deletePermission.do?id=${p.id}" class="btn bg-olive btn-xs">删除权限</a>
+												<a href="${pageContext.request.contextPath}/permission/update/${p.id}" class="btn bg-olive btn-xs">修改权限</a>
+												<a href="javascript:deletePermission('${p.id}')" class="btn bg-olive btn-xs">删除权限</a>
 											</td>
 										</tr>
 									</c:forEach>
@@ -178,15 +177,15 @@
 					<!-- .box-footer-->
 					<div class="box-footer">
 						<div class="pull-left">
-							<div class="form-group form-inline">
-								总共${pageInfo.pages} 页，共${pageInfo.total} 条数据。 每页
-								<select class="form-control" id="changPageSize" onchange="changPageSize('${pageInfo.pageNum}')">
-									<option ${pageInfo.pageSize==1?"selected":""} value="1">1</option>
-									<option ${pageInfo.pageSize==5?"selected":""} value="5">5</option>
-									<option ${pageInfo.pageSize==10?"selected":""} value="10">10</option>
-									<option ${pageInfo.pageSize==20?"selected":""} value="20">20</option>
-								</select> 条
-							</div>
+								<div class="form-group form-inline">
+									总共${pageInfo.pages} 页，共${pageInfo.total} 条数据。 每页
+									<select class="form-control" id="changPageSize" onchange="changPageSize('${pageInfo.pageNum}')">
+										<option ${pageInfo.pageSize==1?"selected":""} value="1">1</option>
+										<option ${pageInfo.pageSize==5?"selected":""} value="5">5</option>
+										<option ${pageInfo.pageSize==10?"selected":""} value="10">10</option>
+										<option ${pageInfo.pageSize==20?"selected":""} value="20">20</option>
+									</select> 条
+								</div>
 						</div>
 
 						<div class="box-tools pull-right">
@@ -200,6 +199,7 @@
 								<li><a href="${pageContext.request.contextPath}/permission/find?pageNum=${pageInfo.pages}&pageSize=${pageInfo.pageSize}&term=${term}" aria-label="Next">尾页</a></li>
 							</ul>
 						</div>
+
 					</div>
 					<!-- /.box-footer-->
 
@@ -274,6 +274,11 @@
 		<script src="../plugins/bootstrap-slider/bootstrap-slider.js"></script>
 		<script>
 
+            function deletePermission(id){
+                if (confirm("确定要删除选中的权限吗？")){
+                    location.href="${pageContext.request.contextPath}/permission/delete/"+id;
+				}
+			}
             <%--条件查询方法--%>
             function search() {
                 var term = $("#term").val();

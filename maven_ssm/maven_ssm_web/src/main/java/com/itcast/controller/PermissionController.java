@@ -1,11 +1,13 @@
 package com.itcast.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.itcast.domain.Permission;
 import com.itcast.domain.UserInfo;
 import com.itcast.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +25,47 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 //-------------------------------------保存操作--------------------------------------------//
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    public String savePermission(Permission permission) throws Exception {
+
+        permissionService.savePermission(permission);
+        return "redirect:/permission/find";
+    }
+
 //-------------------------------------更新操作--------------------------------------------//
+    /**
+    * @Author: 32725
+    * @Param: [id, model]
+    * @Return: java.lang.String
+    * @Description: 修改权限，回显数据
+    **/
+    @RequestMapping(value = "/update/{id}",method = RequestMethod.GET)
+    public String update(@PathVariable String id,Model model)throws Exception{
+        //1.根据id查找指定权限
+        Permission permission = permissionService.findOne(id);
+        //2.存入request域中
+        model.addAttribute("permission", permission);
+        return "permission-show";
+    }
+    /**
+    * @Author: 32725
+    * @Param: [id, model]
+    * @Return: java.lang.String
+    * @Description: 修改权限
+    **/
+    @RequestMapping(value = "/update/{id}",method = RequestMethod.PUT)
+    public String updatePermission(@PathVariable String id,Permission permission)throws Exception{
+        permissionService.update(permission,id);
+        return "redirect:/permission/find";
+    }
+
 //-------------------------------------删除操作--------------------------------------------//
+    @RequestMapping("/delete/{id}")
+    public String deletePermission(@PathVariable String id) throws Exception {
+        permissionService.deletePermission(id);
+        return "redirect:/permission/find";
+    }
+
 //-------------------------------------查询操作--------------------------------------------//
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)

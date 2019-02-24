@@ -1,5 +1,6 @@
 package com.itcast.service;
 
+import com.itcast.domain.Permission;
 import com.itcast.domain.UserInfo;
 
 import java.util.List;
@@ -18,4 +19,35 @@ public interface PermissionService {
     * @Description: 分页查询所有权限
     **/
     List<UserInfo> findAll(Integer pageNum, Integer pageSize, String term)throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [permission]
+    * @Return: void
+    * @Description: 添加权限
+    **/
+    void savePermission(Permission permission)throws Exception;
+
+    /**
+     * @Author: 32725
+     * @Param: [id]
+     * @Return: void
+     * @Description: 根据权限id删除权限
+     **/
+    void deletePermission(String id) throws Exception;
+    /**
+    * @Author: 32725
+    * @Param: [id]
+    * @Return: com.itcast.domain.Permission
+    * @Description: 根据id查找指定权限
+    **/
+    Permission findOne(String id)throws Exception;
+
+    /**
+     * @Author: 32725
+     * @Param: [id, model]
+     * @Return: java.lang.String
+     * @Description: 修改权限
+     **/
+    void update(Permission permission, String id) throws Exception;
 }

@@ -3,8 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itcast.dao.PermissionDao">
-    <select id="findByRoleId" parameterType="string" resultType="permission" >
-        select * from PERMISSION where ID in (select PERMISSIONID from ROLE_PERMISSION where ROLEID=#{roleId})
+    <select id="findByRoleId" parameterType="string" resultType="permission">
+        select *
+        from PERMISSION
+        where ID in (select PERMISSIONID from ROLE_PERMISSION where ROLEID = #{roleId})
     </select>
 
     <select id="findAll" parameterType="string" resultType="permission">
@@ -15,4 +17,32 @@
             </if>
         </where>
     </select>
+
+    <select id="findOne" parameterType="string" resultType="permission">
+        select *
+        from PERMISSION
+        where ID = #{id}
+    </select>
+    <!--添加权限-->
+    <insert id="savePermission" parameterType="permission">
+        insert into PERMISSION(permissionname, url)
+        values (#{permissionName}, #{url})
+    </insert>
+
+    <!--根据权限id删除RoleAndPermission表中的记录-->
+    <delete id="deleteRoleAndPermission" parameterType="string">
+        delete
+        from ROLE_PERMISSION
+        where PERMISSIONID = #{id}
+    </delete>
+    <!--删除权限-->
+    <delete id="deletePermission" parameterType="string">
+        delete
+        from PERMISSION
+        where ID = #{id}
+    </delete>
+
+    <update id="update">
+        update PERMISSION set URL=#{permission.url} where id = #{id}
+    </update>
 </mapper>
