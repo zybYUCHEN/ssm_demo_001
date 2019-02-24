@@ -209,9 +209,9 @@
                         </div>
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
-                                <input type="text" class="form-control input-sm"
-                                       placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback"></span>
+                                <input type="text" class="form-control input-sm" placeholder="${term}" id="term" value="${term}">
+                                <button type="button" class="btn bg-olive btn-xs" onclick="search()">搜索</button>
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
                             </div>
                         </div>
                         <!--工具栏/-->
@@ -280,13 +280,13 @@
 
                     <div class="box-tools pull-right">
                         <ul class="pagination">
-                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=1&pageSize=${pageInfo.pageSize}" aria-label="Previous">首页</a></li>
-                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}">上一页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=1&pageSize=${pageInfo.pageSize}&term=${term}" aria-label="Previous">首页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}&term=${term}">上一页</a></li>
                             <c:forEach begin="1" end="${pageInfo.pages}" var="pageNum">
-                                <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageNum}&pageSize=${pageInfo.pageSize}">${pageNum}</a></li>
+                                <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageNum}&pageSize=${pageInfo.pageSize}&term=${term}">${pageNum}</a></li>
                             </c:forEach>
-                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}">下一页</a></li>
-                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageInfo.pages}&pageSize=${pageInfo.pageSize}" aria-label="Next">尾页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}&term=${term}">下一页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/product/find?pageNum=${pageInfo.pages}&pageSize=${pageInfo.pageSize}&term=${term}" aria-label="Next">尾页</a></li>
                         </ul>
                     </div>
 
@@ -402,10 +402,16 @@
 <script
         src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script>
-   function changPageSize(pageNum){
-       var pageSize = $("#changPageSize").val();
-       location.href="${pageContext.request.contextPath}/product/find?pageNum="+pageNum+"&pageSize="+pageSize;
-   }
+    <%--条件查询方法--%>
+    function search() {
+        var term = $("#term").val();
+        location.href="${pageContext.request.contextPath}/product/find?pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}&term="+term;
+    }
+    <%--切换pageSize，每页展示数据量--%>
+    function changPageSize(pageNum){
+        var pageSize = $("#changPageSize").val();
+        location.href="${pageContext.request.contextPath}/product/find?pageNum="+pageNum+"&pageSize="+pageSize+"&term=${term}";
+    }
     function update(id) {
         location.href="${pageContext.request.contextPath}/product/update/"+id;
     }

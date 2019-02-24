@@ -66,6 +66,6 @@ public interface ProductService {
      * @Return: java.util.List<com.itcast.domain.Product>
      * @Description: 查找商品表中所有数据
      **/
-    List<Product> findAll(Integer pageNum, Integer pageSize) throws Exception;
+    List<Product> findAll(Integer pageNum, Integer pageSize,String term) throws Exception;
 
 }

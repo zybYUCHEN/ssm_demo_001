@@ -15,7 +15,7 @@
         select * from ROLE
         <where>
             <if test="value!=null and value.length>0">
-                USERNAME like #{username}
+                roleName like #{roleName}
             </if>
         </where>
     </select>

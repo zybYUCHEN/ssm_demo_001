@@ -99,15 +99,17 @@ public class ProductController {
      * @Description: 查询所有用户
      **/
     @RequestMapping(value = "/find",method = {RequestMethod.GET})
-    public String findAll(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
-                          @RequestParam(value = "pageSize",required = false,defaultValue = "5")Integer _pageSize, Model model) throws Exception {
+    public String findAll(@RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                          @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer _pageSize,
+                          @RequestParam(name = "term", required = false, defaultValue = "") String term,
+                          Model model) throws Exception {
         //0.全局通过每页展示数据量来设置默认pageSize
         Integer pageSize =5;
         if (_pageSize!=5){
             pageSize=_pageSize;
         }
         //1.传递分页参数，currentPage当前页，默认为1，pageSize每页展示的数据条数，默认为5
-        List<Product> list = productService.findAll(pageNum,pageSize);
+        List<Product> list = productService.findAll(pageNum,pageSize,term);
         //2.使用PageInfo封装分页数据
         PageInfo pageInfo = new PageInfo(list);
         //3.添加入request域中

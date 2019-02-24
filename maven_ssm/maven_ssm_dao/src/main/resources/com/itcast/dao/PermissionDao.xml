@@ -6,4 +6,13 @@
     <select id="findByRoleId" parameterType="string" resultType="permission" >
         select * from PERMISSION where ID in (select PERMISSIONID from ROLE_PERMISSION where ROLEID=#{roleId})
     </select>
+
+    <select id="findAll" parameterType="string" resultType="permission">
+        select * from PERMISSION
+        <where>
+            <if test="value!=null and value.length>0">
+                permissionName like #{name}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -67,5 +67,5 @@ public interface ProductDao {
      * @Return: java.util.List<com.itcast.domain.Product>
      * @Description: 查找商品表中所有数据
      */
-    List<Product> findAll()throws Exception;
+    List<Product> findAll(String term)throws Exception;
 }

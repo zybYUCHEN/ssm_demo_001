@@ -78,11 +78,16 @@ public class ProductServiceImpl implements ProductService {
      **/
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public List<Product> findAll(Integer pageNum,Integer pageSize) throws Exception{
+    public List<Product> findAll(Integer pageNum,Integer pageSize,String term) throws Exception{
+
         //1.使用PageHelper静态方法进行物理分页
         PageHelper.startPage(pageNum, pageSize);
-        //2.执行查询方法
-        return productDao.findAll();
+        //2.判断条件是否存在,存在就加上模糊查询
+        if (term!=null&&!term.equals("")){
+            term="%"+term+"%";
+        }
+        //3.执行查询方法
+        return productDao.findAll(term);
     }
 
     /**
