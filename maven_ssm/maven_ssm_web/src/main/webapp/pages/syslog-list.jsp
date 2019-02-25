@@ -218,17 +218,17 @@
                                     <c:set var="begin" value="1"/>
                                     <c:set var="end" value="${pageInfo.pages}"/>
                                 </c:when>
-                                <%--页数超过了6页--%>
+                                <%--页数超过了10页--%>
                                 <c:otherwise>
                                     <c:set var="begin" value="${pageInfo.pageNum - 5}"/>
                                     <c:set var="end" value="${pageInfo.pageNum + 4}"/>
-                                    <%--如果begin减1后为0,设置起始页为1,最大页为6--%>
-                                    <c:if test="${begin -5 <= 0}">
+                                    <%--如果begin减1后为0,设置起始页为1,最大页为10--%>
+                                    <c:if test="${begin -1 <= 0}">
                                         <c:set var="begin" value="1"/>
-                                        <c:set var="end" value="6"/>
+                                        <c:set var="end" value="10"/>
                                     </c:if>
                                     <%--如果end超过最大页,设置起始页=最大页-5--%>
-                                    <c:if test="${end > pageInfo.pages}">
+                                    <c:if test="${end >pageInfo.pages}">
                                         <c:set var="begin" value="${pageInfo.pages - 5}"/>
                                         <c:set var="end" value="${pageInfo.pages}"/>
                                     </c:if>
