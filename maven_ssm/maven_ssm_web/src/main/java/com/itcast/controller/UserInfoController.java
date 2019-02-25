@@ -115,10 +115,10 @@ public class UserInfoController {
      **/
     @RequestMapping(value = "/update/{uid}/{list}",method = RequestMethod.GET)
     public String updateRole(@PathVariable String uid,@PathVariable String list) throws Exception {
-        //1.不管是否勾选了角色，都先执行清除操作，把用户的所有权限都删除
+        //1.不管是否勾选了角色，都先执行清除操作，把用户的所有角色都删除
             userInfoService.deleteUserRole(uid);
         //2.没有勾选角色的话，直接跳转到
-        if (list==null||list.equals("")){
+        if (list.equals("no")){
             return "redirect:/user/find";
         }
         //2.切割参数
@@ -162,12 +162,18 @@ public class UserInfoController {
     public String findUser(@PathVariable String id, @PathVariable String pageName, Model model, HttpSession session) throws Exception {
         //1.根据用户id查找用户
         UserInfo user = userInfoService.findUser(id);
-        List<Role> userInfoRoles = user.getRoles();
+        List<Role> userRoles = user.getRoles();
         //2.查找所有权限
         List<Role> roles = rolesService.findAll();
+        //3.当前用户没有角色
+        if (userRoles==null||userRoles.size()==0){
+            model.addAttribute("user", user);
+            model.addAttribute("roles", roles);
+            return pageName;
+        }
         //3.判断当前用户拥有哪些角色
         for (Role role : roles) {
-            for (Role userRole : userInfoRoles) {
+            for (Role userRole : userRoles) {
                 if (role.getRoleName().equals(userRole.getRoleName())) {
                     role.setStatus(1);
                 }

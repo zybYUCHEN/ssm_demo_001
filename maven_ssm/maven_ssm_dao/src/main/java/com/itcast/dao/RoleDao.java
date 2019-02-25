@@ -77,4 +77,12 @@ public interface RoleDao {
      * @Description: 根据角色id查找角色
      **/
     Role findById(String roleId)throws Exception;
+
+    /**
+     * @Author: 32725
+     * @Param: [s]
+     * @Return: void
+     * @Description: 给指定的用户添加权限
+     **/
+    void addPermission(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
 }

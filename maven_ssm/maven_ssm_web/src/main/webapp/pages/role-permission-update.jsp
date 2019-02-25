@@ -90,18 +90,16 @@
                         href="${pageContext.request.contextPath}/user/find">用户管理</a></li>
                 <li class="active">修改角色权限表单</li>
             </ol>
-            <h3></h3>
+            <h3>${role.roleName}</h3>
         </section>
         <!-- 内容头部 /-->
 
         <form
-                action="${pageContext.request.contextPath}/role/save"
+                action="${pageContext.request.contextPath}/role/update/${role.id}"
                 method="post">
             <!-- 正文区域 -->
             <section class="content">
-                <input type="hidden" name="userId" value="${role.roleName}">
-                <input type="hidden" name="_method" value="PUT">
-
+                <input type="hidden" value="PUT" name="_method">
                 <table id="dataList"
                        class="table table-bordered table-striped table-hover dataTable">
                     <thead>
@@ -246,33 +244,22 @@
     function saveRoles() {
         var arr = $(".ids");
         var list="";
-        $.ajax({
-            url:"${pageContext.request.contextPath}/user/update/${user.id}",
-            type:"POST",
-            contentType:"application/json",
-            dataType:"json",
-            success:function (data) {
-                if (data=="1"){//js中判断字符串相等使用==
-                    alert("不允许修改自己的角色");
-                    return;
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].checked) {
+                list = list + arr[i].value;
+                if (i < arr.length - 1) {
+                    list = list + ",";
                 }
-                for(var i =0;i<arr.length;i++){
-                    if (arr[i].checked){
-                        list=list+arr[i].value;
-                        if (i<arr.length-1){
-                            list=list+",";
-                        }
-                    }
-                }
-                if (confirm("确认修改吗？")) {
-                    location.href="${pageContext.request.contextPath}/user/update/${user.id}/"+list;
-                }
-
             }
-        });
-
-
+        }
+        if (confirm("确认修改吗？")) {
+            if (list==""){
+                list="no";
+            }
+            location.href = "${pageContext.request.contextPath}/role/update/${role.id}/" + list;
+        }
     }
+
 
     $(document).ready(function () {
         // 选择框

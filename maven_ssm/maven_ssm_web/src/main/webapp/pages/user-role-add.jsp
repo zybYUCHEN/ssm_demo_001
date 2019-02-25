@@ -265,6 +265,9 @@
                     }
                 }
                 if (confirm("确认修改吗？")) {
+                    if (list==""){
+                        list="no";
+                    }
                     location.href="${pageContext.request.contextPath}/user/update/${user.id}/"+list;
                 }
 

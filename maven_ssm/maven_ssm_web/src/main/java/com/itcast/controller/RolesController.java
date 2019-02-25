@@ -41,7 +41,27 @@ public class RolesController {
         rolesService.saveRole(role);
         return "redirect:/role/find";
     }
+
+
 //--------------------------------------------------更新操作--------------------------------------------//
+
+    @RequestMapping(value = "/update/{roleId}/{list}",method = RequestMethod.GET)
+    public String updateRolePermission(@PathVariable String roleId,@PathVariable String list) throws Exception {
+       //1.不管是否勾选了权限，都先执行清除操作，把角色的所有权限都删除
+        rolesService.deleteRoleAndPermission(roleId);
+        //2.没有勾选权限的话，直接跳转到
+        if (list.equals("no")){
+            return "redirect:/role/find";
+        }
+        //3.处理参数
+        String[] ids = list.split(",");
+        //4.添加角色权限
+        for (String permissionId : ids) {
+            rolesService.addPermission(roleId,permissionId);
+        }
+        return "redirect:/role/find";
+    }
+
 //--------------------------------------------------删除操作--------------------------------------------//
 
     /**
@@ -104,16 +124,20 @@ public class RolesController {
         //2.查询当前角色所拥有的权限
         Role role = rolesService.findById(roleId);
         List<Permission> permissions = role.getPermissions();
-        //3.遍历所有权限，判断是否是当前用户所具备权限
+        //3.当前角色没有权限
+        if (permissions==null||permissions.size()==0){
+            model.addAttribute("psList", psList);
+            model.addAttribute("role", role);
+            return "role-permission-update";
+        }
+        //4.遍历所有权限，判断是否是当前用户所具备权限
         for (int i = 0; i < psList.size(); i++) {
-            if (permissions!=null &&permissions.size()> 0) {
                 for (int j = 0; j < permissions.size(); j++) {
                     if (psList.get(i).getPermissionName().equals(permissions.get(j).getPermissionName())) {
                         //如果包含的话修改状态为1
                         psList.get(i).setStatus(1);
                     }
                 }
-            }
         }
         model.addAttribute("psList", psList);
         model.addAttribute("role", role);

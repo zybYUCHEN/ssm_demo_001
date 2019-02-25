@@ -5,10 +5,13 @@
 <mapper namespace="com.itcast.dao.RoleDao">
     <resultMap id="roleAndPermission" type="role">
         <id column="id" property="id"/>
-        <collection property="permissions" column="id" ofType="permission" select="com.itcast.dao.PermissionDao.findByRoleId" fetchType="lazy"/>
+        <collection property="permissions" column="id" ofType="permission"
+                    select="com.itcast.dao.PermissionDao.findByRoleId" fetchType="lazy"/>
     </resultMap>
-    <select id="findByUserId" parameterType="string" resultMap="roleAndPermission" >
-        select * from ROLE where ID in (select ROLEID from USERS_ROLE where USERID=#{userId})
+    <select id="findByUserId" parameterType="string" resultMap="roleAndPermission">
+        select *
+        from ROLE
+        where ID in (select ROLEID from USERS_ROLE where USERID = #{userId})
     </select>
 
     <select id="findAll" parameterType="string" resultMap="roleAndPermission">
@@ -21,35 +24,52 @@
     </select>
 
     <!--给用户添加角色-->
-    <insert id="addRole" >
-        insert into USERS_ROLE values (#{userId},#{roleId})
+    <insert id="addRole">
+        insert into USERS_ROLE
+        values (#{userId}, #{roleId})
     </insert>
-
+    <!--给角色添加权限-->
+    <insert id="addPermission">
+        insert into ROLE_PERMISSION(permissionid, roleid)
+        values (#{permissionId},#{roleId})
+    </insert>
     <!--添加新角色-->
     <insert id="saveRole" parameterType="role">
-        insert into ROLE(rolename, roledesc) VALUES (#{roleName},#{roleDesc})
+        insert into ROLE(rolename, roledesc)
+        VALUES (#{roleName}, #{roleDesc})
     </insert>
     <!--删除角色开始-->
 
     <delete id="deleteUserAndRole" parameterType="string">
-        delete from USERS_ROLE where ROLEID = #{roleId}
+        delete
+        from USERS_ROLE
+        where ROLEID = #{roleId}
     </delete>
     <delete id="deleteRoleAndPermission" parameterType="string">
-        delete from ROLE_PERMISSION where ROLEID = #{roleId}
+        delete
+        from ROLE_PERMISSION
+        where ROLEID = #{roleId}
     </delete>
     <delete id="deleteRole" parameterType="string">
-        delete from ROLE where ID = #{id}
+        delete
+        from ROLE
+        where ID = #{id}
     </delete>
 
     <!--删除角色结束-->
 
     <!--查询当前角色所有权限-->
     <select id="findAllPermissionById" parameterType="string">
-        select * from ROLE_PERMISSION where ROLEID = #{roleId}
+        select *
+        from ROLE_PERMISSION
+        where ROLEID = #{roleId}
     </select>
 
     <!--根据角色id查找角色-->
-    <select id="findById" parameterType="string" resultType="role">
-        select * from ROLE where ID = #{id}
+
+    <select id="findById" parameterType="string" resultMap="roleAndPermission">
+        select *
+        from ROLE
+        where ID = #{id}
     </select>
 </mapper>
