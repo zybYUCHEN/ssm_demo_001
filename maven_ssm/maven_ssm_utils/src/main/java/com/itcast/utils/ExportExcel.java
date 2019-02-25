@@ -1,10 +1,8 @@
 package com.itcast.utils;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -27,48 +25,49 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
 /**
- *  * 利用开源组件POI3.0.2动态导出EXCEL文档
+ *  * 利用开源组件POI3.8动态导出EXCEL文档
  *  *
  *  * @version v1.0
  *  * @param <T>
- *  *            应用泛型，代表任意一个符合javabean风格的类
- *  *            注意这里为了简单起见，boolean型的属性xxx的get器方式为getXxx(),而不是isXxx()
- *  *            byte[]表jpg格式的图片数据
+ *  *      应用泛型，代表任意一个符合javabean风格的类
+ *  *      注意这里为了简单起见，boolean型的属性xxx的get器方式为getXxx(),而不是isXxx()
+ *  *      byte[]表是jpg格式的图片数据
  *  
  */
 public class ExportExcel<T> {
+    //System.getProperties().getProperty("");可以获得一些系统信息，
+    //file.separator：获取的是当前系统的文件分隔符
+    //path.separator：路径分隔符
+    //可以看到Linux系统中，路径中的文件名分隔符是"/"，而Windows中是"\"
+    //同样，可以看到Linux系统中，path间的分隔符是"："（冒号），而Windows中是"；"（分号）
     public static final String FILE_SEPARATOR = System.getProperties().getProperty("file.separator");
-
-    public void exportExcel(Collection<T> dataset, OutputStream out) {
-        exportExcel("测试POI导出EXCEL文档", null, dataset, out, "yyyy-MM-dd");
-    }
-    //该方法自己修改了，将表格头传入的方式**
-
+    /**
+    * @Author: 32725
+    * @Param: [title, headers, dataset, out]
+    * @Return: void
+    * @Description:  采用方法重载的方式，给特定的参数传入默认值，是工具类使用更加便捷
+    **/
     public void exportExcel(String title, String[] headers, Collection<T> dataset, OutputStream out) {
-        exportExcel(title, headers, dataset, out, "yyyy-MM-dd");
-    }
-
-    public void exportExcel(String[] headers, Collection<T> dataset, OutputStream out, String pattern) {
-        exportExcel("测试POI导出EXCEL文档", headers, dataset, out, pattern);
+        exportExcel(title, headers, dataset, out, "yyyy-MM-dd hh:mm:ss");
     }
 
     /**
      *      * 这是一个通用的方法，利用了JAVA的反射机制，可以将放置在JAVA集合中并且符号一定条件的数据以EXCEL 的形式输出到指定IO设备上
      *      *
      *      * @param title
-     *      *            表格标题名
+     *      *            表格标题名sheet名
      *      * @param headers
-     *      *            表格属性列名数组
+     *      *            表格属性列名数组，表头
      *      * @param dataset
      *      *            需要显示的数据集合,集合中一定要放置符合javabean风格的类的对象。此方法支持的
      *      *            javabean属性的数据类型有基本数据类型及String,Date,byte[](图片数据)
      *      * @param out
-     *      *            与输出设备关联的流对象，可以将EXCEL文档导出到本地文件或者网络中
+     *      *            与输出设备关联的流对象，可以将EXCEL文档导出到本地文件或者网络中，字节输出流
      *      * @param pattern
-     *      *            如果有时间数据，设定输出格式。默认为"yyy-MM-dd"
+     *      *            如果有时间数据，设定输出格式。默认为"yyy-MM-dd hh:mm:dd"
      *     
      */
-    @SuppressWarnings("unchecked")
+
     public void exportExcel(String title, String[] headers,
                             Collection<T> dataset, OutputStream out, String pattern) {
         // 声明一个工作薄
