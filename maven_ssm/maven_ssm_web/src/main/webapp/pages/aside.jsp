@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <aside class="main-sidebar">
+
 	<!-- sidebar: style can be found in sidebar.less -->
 	<section class="sidebar">
 		<!-- Sidebar user panel -->
@@ -10,7 +11,11 @@
 					class="img-circle" alt="User Image">
 			</div>
 			<div class="pull-left info">
-				<p><security:authentication property="principal.username"/></p>
+				<p><security:authentication property="principal.username" scope="page" var="username"/></p>
+				<p>${username}</p>
+				<%--<script>--%>
+                    <%--alert(${username});--%>
+				<%--</script>--%>
 				<a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
 			</div>
 		</div>
@@ -35,6 +40,7 @@
 						href="${pageContext.request.contextPath}/user/find"> <i
 							class="fa fa-circle-o"></i> 用户管理
 					</a></li>
+					<security:authorize access="hasRole('ROLE_ADMIN')">
 					<li id="system-setting"><a
 						href="${pageContext.request.contextPath}/role/find"> <i
 							class="fa fa-circle-o"></i> 角色管理
@@ -43,6 +49,7 @@
 						href="${pageContext.request.contextPath}/permission/find">
 							<i class="fa fa-circle-o"></i> 资源权限管理
 					</a></li>
+					</security:authorize>
 					<li id="system-setting"><a
 						href="${pageContext.request.contextPath}/log/find"> <i
 							class="fa fa-circle-o"></i> 访问日志

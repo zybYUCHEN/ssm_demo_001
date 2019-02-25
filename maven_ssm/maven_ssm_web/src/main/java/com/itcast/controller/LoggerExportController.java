@@ -4,6 +4,7 @@ import com.itcast.domain.SysLog;
 import com.itcast.service.LoggerExportService;
 import com.itcast.utils.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,7 @@ public class LoggerExportController {
     @Autowired
     private LoggerExportService loggerExportService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/xml", method = RequestMethod.GET)
     public void loggerExport(HttpServletResponse response) throws Exception {
         //1.获取日志数据

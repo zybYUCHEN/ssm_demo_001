@@ -157,6 +157,7 @@
                                 <th class="sorting">访问方法</th>
                             </tr>
                             </thead>
+
                             <tbody>
                             <c:forEach items="${pageInfo.list}" var="syslog">
                                 <tr>
@@ -208,14 +209,58 @@
                             <li>
                                 <a href="${pageContext.request.contextPath}/log/find?pageNum=${pageInfo.pageNum-1}&pageSize=${pageInfo.pageSize}&term=${term}">上一页</a>
                             </li>
-                            <c:forEach begin="1" end="${pageInfo.pages}" var="pageNum">
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/log/find?pageNum=${pageNum}&pageSize=${pageInfo.pageSize}&term=${term}">${pageNum}</a>
-                                </li>
+
+                            <%--中间页--%>
+                            <%--显示10页,和百度一样前五后四[begin=起始页,end=最大页]--%>
+                            <%--总页数没有6页--%>
+                            <c:choose>
+                                <c:when test="${pageInfo.pages <= 10}">
+                                    <c:set var="begin" value="1"/>
+                                    <c:set var="end" value="${pageInfo.pages}"/>
+                                </c:when>
+                                <%--页数超过了6页--%>
+                                <c:otherwise>
+                                    <c:set var="begin" value="${pageInfo.pageNum - 5}"/>
+                                    <c:set var="end" value="${pageInfo.pageNum + 4}"/>
+                                    <%--如果begin减1后为0,设置起始页为1,最大页为6--%>
+                                    <c:if test="${begin -5 <= 0}">
+                                        <c:set var="begin" value="1"/>
+                                        <c:set var="end" value="6"/>
+                                    </c:if>
+                                    <%--如果end超过最大页,设置起始页=最大页-5--%>
+                                    <c:if test="${end > pageInfo.pages}">
+                                        <c:set var="begin" value="${pageInfo.pages - 5}"/>
+                                        <c:set var="end" value="${pageInfo.pages}"/>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
+                            <%--遍历--%>
+                            <c:forEach var="i" begin="${begin}" end="${end}">
+                                <%--当前页,选中--%>
+                                <c:choose>
+                                    <c:when test="${i == pageInfo.pageNum}">
+                                        <li class="active">
+                                            <a href="${pageContext.request.contextPath}/log/find?pageNum=${i}&pageSize=${pageInfo.pageSize}&term=${term}">${i}</a>
+                                        </li>
+                                    </c:when>
+                                    <%--不是当前页--%>
+                                    <c:otherwise>
+                                        <li class="">
+                                            <a href="${pageContext.request.contextPath}/log/find?pageNum=${i}&pageSize=${pageInfo.pageSize}&term=${term}">${i}</a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:forEach>
+                            <%--<c:forEach begin="1" end="${pageInfo.pages}" var="pageNum">--%>
+                            <%--<li>--%>
+                            <%--<a href="${pageContext.request.contextPath}/log/find?pageNum=${pageNum}&pageSize=${pageInfo.pageSize}&term=${term}">${pageNum}</a>--%>
+                            <%--</li>--%>
+                            <%--</c:forEach>--%>
                             <li>
                                 <a href="${pageContext.request.contextPath}/log/find?pageNum=${pageInfo.pageNum+1}&pageSize=${pageInfo.pageSize}&term=${term}">下一页</a>
                             </li>
+
+
                             <li>
                                 <a href="${pageContext.request.contextPath}/log/find?pageNum=${pageInfo.pages}&pageSize=${pageInfo.pageSize}&term=${term}"
                                    aria-label="Next">尾页</a></li>
