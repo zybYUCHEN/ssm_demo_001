@@ -149,7 +149,7 @@
 
 									<c:forEach items="${pageInfo.list}" var="role">
 										<tr>
-											<td><input name="ids" type="checkbox"></td>
+											<td><input name="ids" class="ids" value="${role.id}" type="checkbox"></td>
 											<td>${role.id }</td>
 											<td>${role.roleName }</td>
 											<td>${role.roleDesc }</td>																				
@@ -278,7 +278,35 @@
 		<script src="../plugins/ionslider/ion.rangeSlider.min.js"></script>
 		<script src="../plugins/bootstrap-slider/bootstrap-slider.js"></script>
 		<script>
-
+			function deleteS(){
+			    //判断多选框是否至少有一个被勾选的标记
+			    var flag=false;
+			    //获取多选框
+			    var arr = $(".ids");
+			    //定义一个字符串，进行拼接字符串
+				var list="";
+			    //遍历多选框
+                for (var i = 0; i <arr.length ; i++) {
+					if (arr[i].checked){
+					    //如果被勾选，拼接角色id
+					    list=list+arr[i].value;
+					    if (i<arr.length-1){
+					        //添加分割符，最后一个不添加
+					        list=list+",";
+						}
+					    //标志至少有一个被勾选
+					    flag=true;
+					}
+                }
+                //判断有无勾选
+				if (!flag){
+				    alert("请勾选需要删除的角色");
+				    return;
+				}
+				if (confirm("确认要删除吗？")){
+				    location.href="${pageContext.request.contextPath}/role/delete/"+list;
+				}
+			}
 
             <%--条件查询方法--%>
             function search() {

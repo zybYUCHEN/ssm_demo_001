@@ -33,11 +33,11 @@ public class LoggerExportController {
         List<SysLog> sysLogs = loggerExportService.findAllSysLog();
         //2.编写唯一文件名，中文文件名必须使用此句话
         String filename = new String(("访问日志" + System.currentTimeMillis() + ".xls").getBytes(), "iso-8859-1");
-        //3.把响应设置为二进制流，让浏览器下载文件时会用到这个
+        //3.把响应内容的MIME类型设置为二进制流，浏览器下载文件时会用到这个
         response.setContentType("application/OCTET-STREAM;charset=UTF-8");
-        //4.Content-Disposition 属性是作为对下载文件的一个标识字段，attachment告诉浏览器已附件形式打开文件，可以弹出保存弹框
+        //4.Content-Disposition 响应给浏览器的内容的处置方式 ，attachment告诉浏览器已附件形式打开文件，可以弹出保存弹框
         response.setHeader("Content-Disposition", "attachment;filename=" + filename);
-        //5.蛇者表头
+        //5.表头
         String[] headers = {"日志ID","访问时间","访问时间字符格式","用户名","IP地址" , "访问资源路径","持续时间", "访问路径"};//表格的标题栏
 
         try {
