@@ -5,11 +5,11 @@ import com.itcast.domain.Product;
 import com.itcast.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
@@ -100,7 +100,7 @@ public class ProductController {
      * @Return: java.lang.String
      * @Description: 查询所有用户
      **/
-    @Secured({"ROLE_ADMIN"})
+    @PreAuthorize("authentication.principal.username=='赵云' or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/find",method = {RequestMethod.GET})
     public String findAll(@RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                           @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer _pageSize,

@@ -15,13 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  * JSP 的请求，更改请求方法为 POST。
  * @date 2018/12/29
  */
-public class ForwardedHttpMethodFilter implements Filter {
+public class ForwardedHttpMethodFilter implements BeanFilter {
     private static final List<String> ALLOWED_METHODS = Collections.unmodifiableList(Arrays.asList("PUT", "DELETE", "PATCH"));
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -36,14 +31,8 @@ public class ForwardedHttpMethodFilter implements Filter {
         chain.doFilter(httpRequest, httpResponse);
     }
 
-    @Override
-    public void destroy() {
-
-    }
-
     private static class ForwradedHttpMethodRequestWrapper extends HttpServletRequestWrapper {
         public ForwradedHttpMethodRequestWrapper(HttpServletRequest request) {
-
             super(request);
         }
 
