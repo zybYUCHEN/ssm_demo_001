@@ -14,6 +14,18 @@ public class Permission implements Serializable {
     private String permissionName; //权限名称
     private String url; //资源路径
 
+    //添加标记，用于给修改角色权限回显数据时做判断
+    //0.代表用户没有的权限，1.代表用户已有的权限
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     //权限和角色的关联：多对多
     private List<Role> roles;
 

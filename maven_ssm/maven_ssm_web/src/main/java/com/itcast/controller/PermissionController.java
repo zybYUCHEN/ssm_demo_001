@@ -79,7 +79,7 @@ public class PermissionController {
             pageSize = _pageSize;
         }
         //1.传递分页参数，currentPage当前页，默认为1，pageSize每页展示的数据条数，默认为5
-        List<UserInfo> list = permissionService.findAll(pageNum, pageSize, term);
+        List<Permission> list = permissionService.findAll(pageNum, pageSize, term);
         //2.使用PageInfo封装分页数据
         PageInfo pageInfo = new PageInfo(list);
         //3.添加入request域中

@@ -154,8 +154,8 @@
 											<td>${role.roleName }</td>
 											<td>${role.roleDesc }</td>																				
 											<td class="text-center">
-												<a href="${pageContext.request.contextPath}/role/findById.do?id=${role.id}" class="btn bg-olive btn-xs">详情</a>
-												<a href="${pageContext.request.contextPath}/role/findUserByIdAndAllRole.do?id=${user.id}" class="btn bg-olive btn-xs">添加角色</a>
+												<%--<a href="${pageContext.request.contextPath}/role/findById.do?id=${role.id}" class="btn bg-olive btn-xs">详情</a>--%>
+												<a href="${pageContext.request.contextPath}/role/find/${role.id}" class="btn bg-olive btn-xs">修改角色权限</a>
 											</td>
 										</tr>
 									</c:forEach>

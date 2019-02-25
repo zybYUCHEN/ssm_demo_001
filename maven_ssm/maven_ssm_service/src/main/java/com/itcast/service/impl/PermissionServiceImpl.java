@@ -77,13 +77,25 @@ public class PermissionServiceImpl implements PermissionService {
      **/
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
     @Override
-    public List<UserInfo> findAll(Integer pageNum, Integer pageSize, String term) throws Exception {
+    public List<Permission> findAll(Integer pageNum, Integer pageSize, String term) throws Exception {
         //1.使用PageHelper静态方法进行物理分页
         PageHelper.startPage(pageNum, pageSize);
         //2.判断条件是否存在,存在就加上模糊查询
         if (term!=null&&!term.equals("")){
             term="%"+term+"%";
         }
+        return permissionDao.findAll(term);
+    }
+
+    /**
+    * @Author: 32725
+    * @Param: []
+    * @Return: java.util.List<com.itcast.domain.Permission>
+    * @Description: 查询所有权限
+    **/
+    @Override
+    public List<Permission> findAll() throws Exception {
+        String term = "";
         return permissionDao.findAll(term);
     }
 }

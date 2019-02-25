@@ -1,5 +1,6 @@
 package com.itcast.service;
 
+import com.itcast.domain.Permission;
 import com.itcast.domain.Role;
 
 import java.util.List;
@@ -42,4 +43,28 @@ public interface RolesService {
      * @Description: 保存新角色
      **/
     void saveRole(Role role)throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [ids]
+    * @Return: void
+    * @Description: 删除指定的角色
+    **/
+    void deleteRole(String[] ids)throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [roleId]
+    * @Return: java.util.List<com.itcast.domain.Permission>
+    * @Description: 查询当前角色所有权限
+    **/
+    List<Permission> findAllPermissionById(String roleId) throws Exception;
+
+    /**
+    * @Author: 32725
+    * @Param: [roleId]
+    * @Return: com.itcast.domain.Role
+    * @Description: 根据角色id查找角色
+    **/
+    Role findById(String roleId) throws Exception;
 }

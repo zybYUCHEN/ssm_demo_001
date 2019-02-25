@@ -18,7 +18,16 @@ public interface PermissionService {
     * @Return: java.util.List<com.itcast.domain.UserInfo>
     * @Description: 分页查询所有权限
     **/
-    List<UserInfo> findAll(Integer pageNum, Integer pageSize, String term)throws Exception;
+    List<Permission> findAll(Integer pageNum, Integer pageSize, String term)throws Exception;
+    /**
+    * @Author: 32725
+    * @Param: []
+    * @Return: java.util.List<com.itcast.domain.Permission>
+    * @Description: 查询所有权限
+    **/
+    List<Permission> findAll()throws Exception;
+
+
 
     /**
     * @Author: 32725

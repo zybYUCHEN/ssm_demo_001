@@ -31,7 +31,7 @@
         <security:remember-me remember-me-parameter="remember-me" token-repository-ref="jdbcTokenRepository" token-validity-seconds="604800"/>
 
         <!-- 配置具体的拦截的规则 pattern="请求路径的规则" access="访问系统的人，必须有ROLE_USER的角色" -->
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
         <!-- 定义跳转的具体的页面,填写登陆相关表单数据（参数） -->
         <security:form-login
                 default-target-url="/index.jsp"

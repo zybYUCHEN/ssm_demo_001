@@ -27,7 +27,7 @@ public interface PermissionDao {
      * @Return: java.util.List<com.itcast.domain.UserInfo>
      * @Description: 查询所有权限
      **/
-    List<UserInfo> findAll(String term)throws Exception;
+    List<Permission> findAll(String term)throws Exception;
 
     /**
     * @Author: 32725

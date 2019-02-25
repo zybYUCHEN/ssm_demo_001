@@ -29,4 +29,27 @@
     <insert id="saveRole" parameterType="role">
         insert into ROLE(rolename, roledesc) VALUES (#{roleName},#{roleDesc})
     </insert>
+    <!--删除角色开始-->
+
+    <delete id="deleteUserAndRole" parameterType="string">
+        delete from USERS_ROLE where ROLEID = #{roleId}
+    </delete>
+    <delete id="deleteRoleAndPermission" parameterType="string">
+        delete from ROLE_PERMISSION where ROLEID = #{roleId}
+    </delete>
+    <delete id="deleteRole" parameterType="string">
+        delete from ROLE where ID = #{id}
+    </delete>
+
+    <!--删除角色结束-->
+
+    <!--查询当前角色所有权限-->
+    <select id="findAllPermissionById" parameterType="string">
+        select * from ROLE_PERMISSION where ROLEID = #{roleId}
+    </select>
+
+    <!--根据角色id查找角色-->
+    <select id="findById" parameterType="string" resultType="role">
+        select * from ROLE where ID = #{id}
+    </select>
 </mapper>
