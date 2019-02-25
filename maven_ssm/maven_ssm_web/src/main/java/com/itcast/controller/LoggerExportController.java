@@ -2,23 +2,16 @@ package com.itcast.controller;
 
 import com.itcast.domain.SysLog;
 import com.itcast.service.LoggerExportService;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
-import jxl.write.Label;
-import jxl.write.Number;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
+import com.itcast.utils.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.util.List;
 
 
@@ -35,59 +28,33 @@ public class LoggerExportController {
     private LoggerExportService loggerExportService;
 
     @RequestMapping(value = "/xml", method = RequestMethod.GET)
-    public String loggerExport(Model model, @RequestHeader("referer") String referer) throws Exception {
-        //1.获取所有日志信息
+    public void loggerExport(HttpServletResponse response) throws Exception {
+        //1.获取日志数据
         List<SysLog> sysLogs = loggerExportService.findAllSysLog();
-        //2.编辑文件名
-        String fileName = "日志详细记录" + System.currentTimeMillis() + ".xls";
-        //3.编辑工作表的名称，相当于一本书的一页纸
-        String sheetName = "日志详细记录";
-        //4.编辑表格标题
-        String[] title = new String[]{ "用户名", "IP地址", "访问时间","执行时间","请求资源路径",  "访问的方法名"};
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String format = sdf.format(new Date());
-        //5.遍历标题，输出标题
-        WritableWorkbook book = null;
+        //2.编写唯一文件名，中文文件名必须使用此句话
+        String filename = new String(("访问日志" + System.currentTimeMillis() + ".xls").getBytes(), "iso-8859-1");
+        //3.把响应设置为二进制流，让浏览器下载文件时会用到这个
+        response.setContentType("application/OCTET-STREAM;charset=UTF-8");
+        //4.Content-Disposition 属性是作为对下载文件的一个标识字段，attachment告诉浏览器已附件形式打开文件，可以弹出保存弹框
+        response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+        //5.蛇者表头
+        String[] headers = {"日志ID","访问时间","访问时间字符格式","用户名","IP地址" , "访问资源路径","持续时间", "访问路径"};//表格的标题栏
+
         try {
-            // 打开文件
-            book = Workbook.createWorkbook(new File("D:/"+fileName));
-            // 生成名为"学生"的工作表，参数0表示这是第一页
-            WritableSheet sheet = book.createSheet(sheetName, 0);
-
-            for (int j = 0; j < title.length; j++) {
-                sheet.addCell(new jxl.write.Label(j, 0, title[j]));
-            }
-            if (sysLogs != null && !sysLogs.isEmpty()) {
-                for (int i = 1; i <=sysLogs.size(); i++) {
-                    sheet.addCell(new jxl.write.Label(0, i, sysLogs.get(i).getUsername()));
-                    sheet.addCell(new jxl.write.Label(1, i, sysLogs.get(i).getIp()));
-                    sheet.addCell(new jxl.write.Label(2, i, sysLogs.get(i).getVisitTimeStr()));
-                    sheet.addCell(new jxl.write.Number(3, i, sysLogs.get(i).getExecutionTime()));
-                    sheet.addCell(new jxl.write.Label(4, i, sysLogs.get(i).getUrl()));
-                    sheet.addCell(new Label(5, i, sysLogs.get(i).getMethod()));
-//                    if (i==sysLogs.size()){
-//                        sheet.addCell(new Label(0, i+1, "导出操作执行时间："+format));
-//                    }
-                }
-            }
-
-            // 写入数据并关闭文件
-            book.write();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (book != null) {
-                try {
-                    book.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            //创建工具类
+            ExportExcel<SysLog> ex = new ExportExcel<SysLog>();
+            OutputStream out = new BufferedOutputStream(response.getOutputStream());
+            //调用方法，处理表格
+            ex.exportExcel("日志1", headers, sysLogs, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-        return "redirect:"+referer;
-    }
 
+    }
 }
+
 
 
 

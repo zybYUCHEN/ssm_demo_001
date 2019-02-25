@@ -15,10 +15,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -85,10 +87,18 @@ public class SysLogAdvice {
         } else {
             Class[] classArgs = new Class[args.length];
             for (int i = 0; i < args.length; i++) {
-                //注意参数为Model时，通过joinPoint.getArgs();获得的实际类型为BindingAwareModelMap
-                //需要手动替换一下，换成Model.class,不然也找不到方法
-                if (args[i] instanceof BindingAwareModelMap) {
+                // Model，HttpServletResponse，HttpServletRequest，HttpSession，
+                // 这些类型的参数的class类型，不能正常赋予，需要手动赋值，
+                // 它们会被spring框架干扰，导致类型发生变化
+                // 貌似会被security的过滤器链干扰
+                if (args[i] instanceof Model) {
                     classArgs[i] = Model.class;
+                } else if (args[i] instanceof HttpServletResponse) {
+                    classArgs[i] = HttpServletResponse.class;
+                } else if (args[i] instanceof HttpServletRequest) {//StandardSessionFacade
+                    classArgs[i] = HttpServletRequest.class;
+                } else if (args[i] instanceof HttpSession) {
+                    classArgs[i] = HttpSession.class;
                 } else {
                     classArgs[i] = args[i].getClass();
                 }
