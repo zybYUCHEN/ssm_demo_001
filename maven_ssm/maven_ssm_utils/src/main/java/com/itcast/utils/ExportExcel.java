@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
@@ -41,12 +40,13 @@ public class ExportExcel<T> {
     //可以看到Linux系统中，路径中的文件名分隔符是"/"，而Windows中是"\"
     //同样，可以看到Linux系统中，path间的分隔符是"："（冒号），而Windows中是"；"（分号）
     public static final String FILE_SEPARATOR = System.getProperties().getProperty("file.separator");
+
     /**
-    * @Author: 32725
-    * @Param: [title, headers, dataset, out]
-    * @Return: void
-    * @Description:  采用方法重载的方式，给特定的参数传入默认值，是工具类使用更加便捷
-    **/
+     * @Author: 32725
+     * @Param: [title, headers, dataset, out]
+     * @Return: void
+     * @Description: 采用方法重载的方式，给特定的参数传入默认值，是工具类使用更加便捷
+     **/
     public void exportExcel(String title, String[] headers, Collection<T> dataset, OutputStream out) {
         exportExcel(title, headers, dataset, out, "yyyy-MM-dd hh:mm:ss");
     }
@@ -75,7 +75,8 @@ public class ExportExcel<T> {
         // 生成一个表格
         HSSFSheet sheet = workbook.createSheet(title);
         // 设置表格默认列宽度为15个字节
-        sheet.setDefaultColumnWidth((short) 15);
+        // sheet.setDefaultColumnWidth((short) 15);
+        sheet.setDefaultColumnWidth(9200);
         // 生成一个样式
         HSSFCellStyle style = workbook.createCellStyle();
         // 设置这些样式
@@ -111,14 +112,13 @@ public class ExportExcel<T> {
         // 声明一个画图的顶级管理器
         HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
         // 定义注释的大小和位置,详见文档
-        HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0,
-                0, 0, 0, (short) 4, 2, (short) 6, 5));
+        //HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0,0, 0, 0, (short) 4, 2, (short) 6, 5));
 
         // 设置注释内容
         //  comment.setString(new HSSFRichTextString("可以在POI中添加注释！"));
 
         // 设置注释作者，当鼠标移动到单元格上是可以在状态栏中看到该内容.
-        comment.setAuthor("zyb");
+        //comment.setAuthor("zyb");
         // 产生表格标题行
         HSSFRow row = sheet.createRow(0);
         for (short i = 0; i < headers.length; i++) {
@@ -142,28 +142,34 @@ public class ExportExcel<T> {
                 cell.setCellStyle(style2);
                 Field field = fields[i];
                 String fieldName = field.getName();
+//                拼接get方法名
                 String getMethodName = "get"
                         + fieldName.substring(0, 1).toUpperCase()
                         + fieldName.substring(1);
                 try {
+//                    通过反射获取当前类的字节码类型
                     Class tCls = t.getClass();
+//                    通过反射获取get方法，get方法没有参数，创建一个空的字节码数组充当参数
                     Method getMethod = tCls.getMethod(getMethodName, new Class[]{});
+//                  执行get方法获取属性值
                     Object value = getMethod.invoke(t, new Object[]{});
                     // 判断值的类型后进行强制类型转换
                     String textValue = null;
 
                     if (value instanceof Boolean) {
                         boolean bValue = (Boolean) value;
+//                        设一个默认值
                         textValue = "男";
                         if (!bValue) {
                             textValue = "女";
                         }
+//                        是否是日期类型，格式化为指定的格式
                     } else if (value instanceof Date) {
                         Date date = (Date) value;
                         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
                         textValue = sdf.format(date);
                     } else if (value instanceof byte[]) {
-                     // 有图片时，设置行高为60px;
+                        // 有图片时，设置行高为60px;
                         row.setHeightInPoints(60);
                         // 设置图片所在列宽度为80px,注意这里单位的一个换算
                         sheet.setColumnWidth(i, (short) (35.7 * 80));
@@ -175,15 +181,21 @@ public class ExportExcel<T> {
                         patriarch.createPicture(anchor, workbook.addPicture(
                                 bsValue, HSSFWorkbook.PICTURE_TYPE_JPEG));
                     } else {
-                    // 其它数据类型都当作字符串简单处理
+                        // 其它数据类型都当作字符串简单处理
                         textValue = value.toString();
                     }
                     // 如果不是图片数据，就利用正则表达式判断textValue是否全部由数字组成
                     if (textValue != null) {
+                        //将给定的正则表达式编译到模式中，字符串形式的正则，必须由pattern编译
+                        //pattern：模式，正则表达式的编译表示形式。
                         Pattern p = Pattern.compile("^//d+(//.//d+)?$");
+                        //p.matcher(textValue)创建匹配给定输入与此模式的匹配器。
+                        // 通过解释 Pattern 对 character sequence 执行匹配操作的引擎
                         Matcher matcher = p.matcher(textValue);
+                        //尝试将整个区域与模式匹配。
+                        //如果匹配成功，返回true，则可以通过 start、end 和 group 方法获取更多信息。
                         if (matcher.matches()) {
-                    // 是数字当作double处理
+                            // 是数字当作double处理
                             cell.setCellValue(Double.parseDouble(textValue));
                         } else {
                             HSSFRichTextString richString = new HSSFRichTextString(
