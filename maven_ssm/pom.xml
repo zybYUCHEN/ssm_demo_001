@@ -276,12 +276,17 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>7.7.0</version>
+            <version>7.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
-            <version>7.7.0</version>
+            <version>7.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>7.4.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -292,7 +297,7 @@
         <dependency>
             <groupId>com.janeluo</groupId>
             <artifactId>ikanalyzer</artifactId>
-            <version>2012_u6</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
