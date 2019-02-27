@@ -18,6 +18,8 @@
     <security:http security="none" pattern="/css/**"/>
     <security:http security="none" pattern="/js/**"/>
     <security:http security="none" pattern="/plugins/**"/>
+    <security:http security="none" pattern="/captcha/image"/>
+
 
     <!--spring_security基本配置-->
 

@@ -22,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.xmlbeans.impl.xb.xsdschema.All;
 
 /**
  *  * 利用开源组件POI3.8动态导出EXCEL文档
@@ -33,6 +34,7 @@ import org.apache.poi.hssf.util.HSSFColor;
  *  *      byte[]表是jpg格式的图片数据
  *  
  */
+@SuppressWarnings("all")
 public class ExportExcel<T> {
     //System.getProperties().getProperty("");可以获得一些系统信息，
     //file.separator：获取的是当前系统的文件分隔符

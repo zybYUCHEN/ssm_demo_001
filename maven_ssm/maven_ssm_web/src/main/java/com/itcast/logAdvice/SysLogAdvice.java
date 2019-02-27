@@ -1,5 +1,6 @@
 package com.itcast.logAdvice;
 
+import com.itcast.controller.CaptchaRandomCodeController;
 import com.itcast.controller.SysLogController;
 import com.itcast.domain.SysLog;
 import com.itcast.service.SysLogService;
@@ -109,7 +110,7 @@ public class SysLogAdvice {
 
         //4.获取访问路径，实际上就是类上和方法上RequestMapping的值得组合
         //防止空指针异常，通知操作无需记录
-        if (clazz != null && method != null && clazz != SysLogController.class) {
+        if (clazz != null && method != null && clazz != SysLogController.class &&clazz!= CaptchaRandomCodeController.class) {
             //4.1 获取类上的RequestMapping注解的值
             RequestMapping clazzAnnotation = (RequestMapping) clazz.getAnnotation(RequestMapping.class);
             String clazzURL = clazzAnnotation.value()[0];
@@ -117,16 +118,18 @@ public class SysLogAdvice {
             RequestMapping methodAnnotation = method.getAnnotation(RequestMapping.class);
             String methodURL = methodAnnotation.value()[0];
             url = clazzURL + methodURL;
+            //5.获取访问者ip
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
+            IP = details.getRemoteAddress();
+            //6.获取访问者用户名
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            username = userDetails.getUsername();
         }
 
-        //5.获取访问者ip
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
-        IP = details.getRemoteAddress();
 
-        //6.获取访问者用户名
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        username = userDetails.getUsername();
+
+
     }
 
     /**

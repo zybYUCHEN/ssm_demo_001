@@ -41,8 +41,14 @@
 				</div>
 				<div class="form-group has-feedback">
 					<input type="password" name="password" class="form-control"
-						placeholder="密码"> <span
+						placeholder="密码" style="width: auto"> <span
 						class="glyphicon glyphicon-lock form-control-feedback"></span>
+				</div>
+				<div class="form-group has-feedback">
+					<input type="text"
+						   name="kaptcha"  class="form-control" placeholder="验证码"/>
+					<img src="${pageContext.request.contextPath}/captcha/image" id="kaptchaImage" height="25px" width="80px"/>
+						<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 				</div>
 				<div class="row">
 					<div class="col-xs-8">
@@ -76,7 +82,12 @@
 	<script
 		src="${pageContext.request.contextPath}/plugins/iCheck/icheck.min.js"></script>
 	<script>
-		$(function() {
+        $('#kaptchaImage').click(
+            function() {
+                $(this).hide().attr('src','${pageContext.request.contextPath}/captcha/image?'+ Math.floor(Math.random() * 100)).fadeIn();
+            }
+        );
+        $(function() {
 			$('input').iCheck({
 				checkboxClass : 'icheckbox_square-blue',
 				radioClass : 'iradio_square-blue',
