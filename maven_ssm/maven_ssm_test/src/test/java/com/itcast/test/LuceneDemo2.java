@@ -141,9 +141,17 @@ public class LuceneDemo2 {
         tokenStream.close();
     }
 
+    /**
+    * @Author: 32725
+    * @Param: []
+    * @Return: void
+    * @Description: 根据文档大小进行范围查询
+    **/
     @Test
     public void test4(){
-
+        //1.创建查询执行对象
+        Query query = LongPoint.newRangeQuery("fileSize", 1, 100);
+        //2.
     }
 
 }
