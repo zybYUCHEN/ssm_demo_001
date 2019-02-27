@@ -47,7 +47,6 @@ public class CaptchaRandomCodeController {
         String capText = captchaProducer.createText();
         //将文本放入session域中
         request.getSession().setAttribute(Constants.KAPTCHA_SESSION_CONFIG_KEY, capText);
-        System.out.println("Session 验证码是：" + request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY));
         //创建带文本的图片，验证码图片
         BufferedImage image = captchaProducer.createImage(capText);
         //获取响应流
@@ -57,5 +56,6 @@ public class CaptchaRandomCodeController {
         //释放资源
         os.flush();
         os.close();
+        System.out.println("Session 验证码是：" + request.getSession().getAttribute(Constants.KAPTCHA_SESSION_CONFIG_KEY));
     }
 }
