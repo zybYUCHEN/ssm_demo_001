@@ -63,7 +63,9 @@
 					<!-- /.col -->
 				</div>
 			</form>
-
+			<div id="errorMsg" class="alert alert-danger">
+				${loginInfo.msg}
+			</div>
 			<a href="#">忘记密码</a><br>
 
 

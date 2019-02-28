@@ -15,19 +15,21 @@
     <!--因为下面配置了默认目标路径为index.jsp,所以服务器一启动就会打开index页面，这时必须放开index页面，不然服务器一启动
     就会报accessExecution-->
     <security:http security="none" pattern="/index.jsp"/>
+    <security:http security="none" pattern="/main.jsp"/>
     <security:http security="none" pattern="/css/**"/>
     <security:http security="none" pattern="/js/**"/>
     <security:http security="none" pattern="/plugins/**"/>
     <security:http security="none" pattern="/captcha/image"/>
+    <security:http security="none" pattern="/user/login"/>
 
 
     <!-- 配置哪些请求URL需要拦截 -->
     <!--设置认证器入口为自己的beanauthenticationEntryPoint-->
-    <security:http auto-config="false" entry-point-ref="authenticationEntryPoint" use-expressions="true">
+    <security:http auto-config="false"  use-expressions="true">
         <!--配置自动登陆,cookie会存储7天-->
         <security:remember-me remember-me-parameter="remember-me" token-repository-ref="jdbcTokenRepository"
                               token-validity-seconds="604800"/>
-        <security:intercept-url pattern="/user/login" access="permitAll"/>
+        <!--<security:intercept-url pattern="/user/login" access="permitAll"/>-->
         <!-- 配置剩余的请求URL需要拦截，先登录，再获取角色 ROLE_* -->
         <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <!-- 配置表单登录
@@ -37,19 +39,19 @@
        -->
         <security:form-login
                 login-page="/login.jsp"
-                default-target-url="/index.jsp"
+                default-target-url="/main.jsp"
                 always-use-default-target="true"
-                login-processing-url="/login"
-                authentication-failure-url="/failer.jsp"/>
+                authentication-failure-url="/failer.jsp"
+                authentication-success-forward-url="/pages/main.jsp"/>
 
         <!-- 关闭跨站点请求伪造 -->
         <security:csrf disabled="true"/>
 
-        <!-- 配置请求头 -->
-        <security:headers>
-            <!-- 配置同一个域名下，可以访问iframe子窗口 SAMEORIGIN same origin-->
-            <security:frame-options policy="SAMEORIGIN"/>
-        </security:headers>
+        <!--&lt;!&ndash; 配置请求头 &ndash;&gt;-->
+        <!--<security:headers>-->
+            <!--&lt;!&ndash; 配置同一个域名下，可以访问iframe子窗口 SAMEORIGIN same origin&ndash;&gt;-->
+            <!--<security:frame-options policy="SAMEORIGIN"/>-->
+        <!--</security:headers>-->
 
         <!-- 配置退出 -->
         <security:logout invalidate-session="true" logout-url="/logout" logout-success-url="/login.jsp"/>

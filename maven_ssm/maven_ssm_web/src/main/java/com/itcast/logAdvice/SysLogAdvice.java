@@ -1,6 +1,7 @@
 package com.itcast.logAdvice;
 
 import com.itcast.controller.CaptchaRandomCodeController;
+import com.itcast.controller.LoginController;
 import com.itcast.controller.SysLogController;
 import com.itcast.domain.SysLog;
 import com.itcast.service.SysLogService;
@@ -72,6 +73,7 @@ public class SysLogAdvice {
      **/
     @Before("pt1()")
     public void beforeAdvice(JoinPoint joinPoint) throws Exception {
+        boolean flag =false;
         //1.获取访问开始的时间
         visitTime = new Date();
 
@@ -101,16 +103,27 @@ public class SysLogAdvice {
                 } else if (args[i] instanceof HttpSession) {
                     classArgs[i] = HttpSession.class;
                 } else {
-                    classArgs[i] = args[i].getClass();
+                    if (args[i].equals("")||args[i]==null){
+                        continue;
+                    }else {
+                        classArgs[i] = args[i].getClass();
+                    }
                 }
             }
-            method = clazz.getMethod(methodName, classArgs);
+            for (Class classArg : classArgs) {
+                if (classArg==null){
+                 flag=true;
+                }
+            }
+                if (!flag){
+                    method = clazz.getMethod(methodName, classArgs);
+                }
         }
 
 
         //4.获取访问路径，实际上就是类上和方法上RequestMapping的值得组合
         //防止空指针异常，通知操作无需记录
-        if (clazz != null && method != null && clazz != SysLogController.class &&clazz!= CaptchaRandomCodeController.class) {
+        if (clazz != null && method != null && clazz != SysLogController.class &&clazz!= CaptchaRandomCodeController.class&&clazz!= LoginController.class) {
             //4.1 获取类上的RequestMapping注解的值
             RequestMapping clazzAnnotation = (RequestMapping) clazz.getAnnotation(RequestMapping.class);
             String clazzURL = clazzAnnotation.value()[0];
